@@ -1,0 +1,8 @@
+[webserver]
+wb02
+[loadbalancer]
+lb01
+[database]
+db02
+[controller]
+cl01 ansible_connection=local
