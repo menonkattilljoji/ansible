@@ -4,14 +4,15 @@
   tasks:
           - name: install nginx 
             apt: name=nginx state=present update_cache=yes
-
+          - name: copy hosts file
+            template: src=demo/hosts dest=/etc/hosts mode=0644
           - name: ensure nginx started
             service: name=nginx state=started enabled=yes
           - name: configure nginx site
-            template: src=templates/nginx.conf dest=/etc/nginx/sites-available/demo mode=0644 
+            template: src=templates/nginx.conf.j2 dest=/etc/nginx/sites-available/demo mode=0644 
             notify: restart nginx
           - name: remove default site
-            file: path=/etc/nginx/sites-enabled/default
+            file: path=/etc/nginx/sites-enabled/default state=absent
             notify: restart nginx
           - name: activate demo site
             file: src=/etc/nginx/sites-available/demo dest=/etc/nginx/sites-enabled/demo state=link
